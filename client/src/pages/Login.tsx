@@ -19,7 +19,11 @@ type LoginFormInputs = {
 };
 
 
-const Login = () => {
+type LoginProps = {
+  onLogin: () => void;
+};
+
+const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const navigate = useNavigate();
 
   const {
@@ -35,9 +39,9 @@ const Login = () => {
     mutationFn: loginUser,
     onSuccess: (data) => {
       if (data && data.access_token) {
-        document.cookie = `access_token=${data.access_token}; path=/;`;
+          document.cookie = `access_token=${data.access_token};`;
+          onLogin();
       }
-      navigate('/');
     },
   });
 
