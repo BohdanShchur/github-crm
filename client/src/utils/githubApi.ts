@@ -1,0 +1,15 @@
+// GitHub API utility
+
+export const fetchRepos = async (search: string) => {
+  if (!search) return null;
+  const res = await fetch(`https://api.github.com/search/repositories?q=${encodeURIComponent(search)}`);
+  if (!res.ok) throw new Error('Failed to fetch');
+  return res.json();
+};
+
+export const fetchRepoById = async (fullName: string) => {
+  if (!fullName) return null;
+  const res = await fetch(`https://api.github.com/repos/${fullName}`);
+  if (!res.ok) throw new Error('Failed to fetch repo');
+  return res.json();
+};
