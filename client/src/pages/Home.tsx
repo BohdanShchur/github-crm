@@ -47,7 +47,6 @@ export default function Home({ onLogout }: { onLogout: () => void }) {
     });
 
     const onSelectRepo = (repo: any) => {
-        console.log('Selected repo:', repo);
         addMutation.mutate({
         name: repo.full_name,
         owner: repo.owner.login,
@@ -63,12 +62,11 @@ export default function Home({ onLogout }: { onLogout: () => void }) {
     const onRefresh = async (projectId: number) => {
         setRefreshingId(projectId);
         try {
-            // Find the project by id
+            
             const project = (projects || []).find((p: any) => p.id === projectId);
             if (!project) throw new Error('Project not found');
-            // Fetch latest repo data from GitHub
-            const repo = await fetchRepoById(project.name); // project.name should be 'owner/repo'
-            // Prepare updated data
+            
+            const repo = await fetchRepoById(project.name); 
             const updatedData = {
                 name: repo.full_name,
                 owner: repo.owner.login,
@@ -78,7 +76,6 @@ export default function Home({ onLogout }: { onLogout: () => void }) {
                 openIssues: repo.open_issues_count,
                 createdAt: repo.created_at,
             };
-            // Use utility to update project on server
             await updateProject(projectId, updatedData);
             queryClient.invalidateQueries({ queryKey: ['projects'] });
         } catch (err) {
